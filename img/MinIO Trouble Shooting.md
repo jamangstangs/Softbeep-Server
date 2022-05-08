@@ -65,4 +65,69 @@ kube-system         kube-dns                          ClusterIP      10.96.0.10
   - 여기서 CoreDNS의 IP 주소는 확인할 수 없다. 
   - 수정할 방법을 알아보자. 
 
-## /etc/resolv.conf에 Pod
+## 시도 1: /etc/resolv.conf 수정
+
+/etc/resolv.conf 파일에서 DNS를 찾는 원리는 다음과 같다. 
+
+```shell
+nameserver 10.96.0.10
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+```
+
+- nameserver : coredns의 service 리소스인 kube-dns의 IP주소 : 10.96.0.10이다. 
+- search : DNS에 질의할 Domain 경로를 표시한다. 전체 도메인이 검색이 안되면, 그 아래 있는 도메인을 찾아간다. 
+  - 우리 Trouble 해결에는 관련이 없다. 
+- ndots : 전체 도메인 이름에 포함되는 dot의 갯수를 의미한다. 
+  - 역시 관련이 없다. kube-dns로 접근이 안된다. 
+
+## 시도 2: kubelet 확인
+
+Pod 배치가 애초에 안되니까, kubelet에 문제가 있지 않을까?
+
+```shell
+$ kubelet
+E0508 23:02:32.344189 2973545 server.go:302] "Failed to run kubelet" err="failed to run Kubelet: misconfiguration: kubelet cgroup driver: \"cgroupfs\" is different from docker cgroup driver: \"systemd\""
+```
+
+- kubelet의 cgroup driver는  cgroupfs인데,
+- Docker의 cgroup driver는 systemd이다. -> /etc/docker/daemon.json에서 수정을 systemd로 했었다.
+- kubeadm-config.yaml을 다시 수정하자. 
+
+```shell
+# kubeadm-config.yaml
+kind: ClusterConfiguration
+apiVersion: kubeadm.k8s.io/v1beta3
+kubernetesVersion: v1.21.0
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd
+```
+
+## 시도 3 : Busybox 설치
+
+```shell
+#busybox 설치
+$ kubectl create -f https://k8s.io/examples/admin/dns/busybox.yaml
+
+#busybox가 제대로 동작하는지 확인
+$ kubectl get pods busybox
+
+#dns가 정상 동작하는지 확인
+$ kubectl exec -ti busybox -- nslookup kubernetes.default
+```
+
+
+
+출처 : https://github.com/kubernetes/kubeadm/issues/2605
+
+
+
+
+
+
+
+
+
+출처 : https://mrkaran.dev/posts/ndots-kubernetes/?utm_sq=gcoxtn2gb5
