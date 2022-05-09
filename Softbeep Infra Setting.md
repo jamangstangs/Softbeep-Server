@@ -24,10 +24,17 @@
 
 ## Kubernetes Setting 
 
-- Kubernetes Version은 아래와 같다. 
-  - kubelet=1.23.6-00 
-  - kubeadm=1.23.6-00 
-  - kubectl=1.23.6-00
+- Kubernetes Version은 아래와 같다. 1.23.6-00은 MinIO에서 Docker 관련 오류가 발생하여, 수정을 하였다. 자세한 사항은 
+
+   https://velog.io/@borab/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-docker-%EC%A7%80%EC%9B%90-%EC%A4%91%EB%8B%A8%EC%97%90-%EB%94%B0%EB%A5%B8-%EB%8C%80%EC%95%88
+
+  https://kubernetes.io/ko/blog/2020/12/02/dont-panic-kubernetes-and-docker/
+
+  https://www.google.com/search?rlz=1C5CHFA_enKR935KR935&q=Kubernetes+Docker+%EC%A7%80%EC%9B%90+%EC%A4%91%EB%8B%A8&sa=X&ved=2ahUKEwi_upa7xtH3AhUVtlYBHR2rBFgQ1QJ6BAgnEAE&biw=1280&bih=969&dpr=1
+
+  - kubelet=1.22.0-00
+  - kubeadm=1.22.0-00 
+  - kubectl=1.22.0-00
 
 ![](/Users/jamang/Desktop/Softbeep-Server/img/스크린샷 2022-05-07 오후 10.15.47.png)
 
