@@ -36,7 +36,50 @@
   - kubeadm=1.22.0-00 
   - kubectl=1.22.0-00
 
-![](/Users/jamang/Desktop/Softbeep-Server/img/스크린샷 2022-05-07 오후 10.15.47.png)
+- Kubelet 오류
 
-- 총 4대의 node를 바탕으로 Softbeep Server의 K8S Cluster를 완성하였다. 
+  ```shell
+  "Failed to run kubelet" err="failed to run Kubelet: misconfiguration: kubelet cgroup driver: \"cgroupfs\" is different from docker cgroup driver: \"systemd\""
+  
+  # 현재, Kubelet 의 cgroup이 systemd이므로, 변경해준다. 
+  # /etc/systemd/system/kubelet.service.d/10-kubeadm.conf 라인추가
+  Environment="KUBELET_CGROUP_ARGS=–cgroup-driver=systemd"
+  
+  # cgroup driver 변경
+  sed -i "s/cgroup-driver=systemd/cgroup-driver=cgroupfs/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+  
+  kubeadm join 210.125.84.129:6443 --token 0fku2j.9ocfegsz39w9kvq5 --discovery-token-ca-cert-hash sadfkjashfjwahnfwenksdfsdhnfasklfhshnfkasndfsahd
+  ```
+
+- coreDNS Pending -> CNI 설치가 안됨, Node 사이의 통신이 안됨
+
+  - CNI 가 무엇인가 https://ykarma1996.tistory.com/179
+  - MinIO에 적합한 CNI plugin이 있다. -> calico
+  - calico를 설치하자 .https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
+
+  
+
+  ## K8S CNI : Calico 설치
+
+  https://ykarma1996.tistory.com/179
+
+  
+
+  
+
+  https://projectcalico.docs.tigera.io/getting-started/kubernetes/quickstart
+
+  
+
+  **설치**
+
+  ```shell
+  ```
+
+  **Preferred Setup**
+
+  ```shell
+  ```
+
+  
 

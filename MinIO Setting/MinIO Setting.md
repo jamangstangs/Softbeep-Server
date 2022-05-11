@@ -248,3 +248,11 @@ Current JWT to login: TOKENSTRING
   - Name
 
 출처 : https://docs.min.io/minio/k8s/deployment/deploy-minio-operator.html
+
+
+
+```shell
+sudo apt-get install -y --allow-downgrades kubelet=1.22.0-00 kubeadm=1.22.0-00 kubectl=1.22.0-00
+```
+
+kubeadm join 210.125.84.129:6443 --token x2ewl8.m0gcf46id2egcdhi --discovery-token-ca-cert-hash sha256:0544149595aa323c87d66dddf3e150b532c6874a60832fa1449b53bd4bed6cfb
