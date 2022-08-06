@@ -1,0 +1,2 @@
+kubeadm join 210.125.84.131:6443 --token bgu942.297wew48ks427tbu \
+	--discovery-token-ca-cert-hash sha256:522949b0a22f7e2fb39fd31d83fea684a7241f194002b506a7ae5baf60470760 
